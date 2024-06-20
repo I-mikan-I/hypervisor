@@ -26,6 +26,8 @@ if(${CMAKE_VERSION} GREATER_EQUAL "3.20")
     cmake_policy(SET CMP0115 OLD)
 endif()
 
+set(HYPERVISOR_TARGET_ARCH AuthenticAMD)
+
 include(${CMAKE_CURRENT_LIST_DIR}/cmake/init_build.cmake)
 add_subdirectory(syscall)
 
