@@ -352,7 +352,7 @@ platform_on_each_cpu_forward(platform_per_cpu_func const func) NOEXCEPT
 {
     uint32_t mut_cpu;
 
-    get_online_cpus();
+    cpus_read_lock();
     for (mut_cpu = 0; mut_cpu < platform_num_online_cpus(); ++mut_cpu) {
         struct work_on_cpu_callback_args args = {func, mut_cpu, 0, 0};
 
@@ -363,11 +363,11 @@ platform_on_each_cpu_forward(platform_per_cpu_func const func) NOEXCEPT
         }
     }
 
-    put_online_cpus();
+    cpus_read_unlock();
     return LOADER_SUCCESS;
 
 work_on_cpu_callback_failed:
-    put_online_cpus();
+    cpus_read_unlock();
     return LOADER_FAILURE;
 }
 
@@ -390,7 +390,7 @@ platform_on_each_cpu_reverse(platform_per_cpu_func const func) NOEXCEPT
 {
     uint32_t mut_cpu;
 
-    get_online_cpus();
+    cpus_read_lock();
     for (mut_cpu = platform_num_online_cpus(); mut_cpu > 0; --mut_cpu) {
         struct work_on_cpu_callback_args args = {func, mut_cpu - 1, 0, 0};
 
@@ -401,11 +401,11 @@ platform_on_each_cpu_reverse(platform_per_cpu_func const func) NOEXCEPT
         }
     }
 
-    put_online_cpus();
+    cpus_read_unlock();
     return LOADER_SUCCESS;
 
 work_on_cpu_callback_failed:
-    put_online_cpus();
+    cpus_read_unlock();
     return LOADER_FAILURE;
 }
 
